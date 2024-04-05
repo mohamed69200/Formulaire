@@ -108,3 +108,34 @@ a:hover {
     color: #ffd700;
 }
 
+/* CSS pour l'affichage des participations */
+#affichage-participation {
+    margin-top: 20px;
+}
+
+#affichage-participation h2 {
+    margin-bottom: 10px;
+}
+
+#affichage-participation table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#affichage-participation th, #affichage-participation td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#affichage-participation th {
+    background-color: #f2f2f2;
+}
+
+#affichage-participation tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#affichage-participation tr:hover {
+    background-color: #f2f2f2;
+}

@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Exécuter la requête SQL
       if ($conn->query($sql) === TRUE) {
         // Redirection vers la page de formulaire avec un message de succès
-        header("Location: index1.html?success=1");
+        header("Location: index1.php?success=1");
         exit();
     } else {
         echo "Erreur lors de l'inscription du pilote : " . $conn->error;
@@ -30,6 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
 } else {
     // Redirection vers la page d'index si le formulaire n'a pas été soumis
-    header("Location: index1.html");
+    header("Location: index1.php");
     exit();
 }

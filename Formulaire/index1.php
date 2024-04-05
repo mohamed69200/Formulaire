@@ -31,7 +31,6 @@
             <li><a href="#inscription-pilote">Inscription Pilote</a></li>
             <li><a href="#enregistrement-karts">Gestion Karts</a></li>
             <li><a href="#planification-courses">Suivi des Courses</a></li>
-            <li><a href="#inscription-course">Inscription Course</a></li>
             <li><a href="#maintenance-karts">Maintenance Karts</a></li>
         </ul>
     </nav>
@@ -128,12 +127,108 @@
         
 
 
-        <section id="maintenance-karts">
-            <h2>Maintenance des Karts</h2>
-            <!-- Formulaire de maintenance des karts -->
-            <p>Formulaire de maintenance des karts ici...</p>
-        </section>
-    </main>
+        <main>
+    <section id="maintenance-karts">
+        <h2>Maintenance des Karts</h2>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <form action="traitement_entretien.php" method="post">
+                    <label for="kart">Kart à entretenir:</label>
+                    <select id="kart" name="kart" required>
+                    <?php
+                    // Inclure le fichier de connexion à la base de données
+                    include 'connexion.php';
+
+                    // Requête SQL pour récupérer les karts existants
+                    $sql = "SELECT KartID, MarqueModele FROM karts";
+                    $result = $conn->query($sql);
+
+                    // Vérifier si des résultats ont été trouvés
+                    if ($result->num_rows > 0) {
+                        // Parcourir les résultats et créer des options pour chaque kart
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value='" . $row['KartID'] . "'>" . $row['MarqueModele'] . "</option>";
+                        }
+                    } else {
+                        echo "<option value='' disabled>Aucun kart trouvé</option>";
+                    }
+
+                    // Fermer la connexion à la base de données
+                    $conn->close();
+                    ?>
+                </select><br><br>
+
+                    <label for="type_entretien">Type d'entretien:</label>
+                    <select id="type_entretien" name="type_entretien" required>
+                        <option value="entretien_preventif">Entretien préventif</option>
+                        <option value="reparation">Réparation</option>
+                        <!-- Ajoutez d'autres options si nécessaire -->
+                    </select><br><br>
+
+                    <label for="description">Description des travaux:</label><br>
+                    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+                    <label for="cout">Coût de l'entretien:</label>
+                    <input type="number" id="cout" name="cout" required><br><br>
+
+                    <label for="date_entretien">Date de l'entretien:</label>
+                    <input type="date" id="date_entretien" name="date_entretien" required><br><br>
+
+                    <input type="submit" value="Enregistrer Entretien">
+                </form>
+            </div>
+            <div style="flex: 1;">
+                <img src="image_entretien.jpg" alt="Image d'entretien" style="max-width: 60%;">
+            </div>
+        </div>
+    </section>
+  
+    <h1>Détails de la participation</h1>
+    <section id="affichage-participation">
+    <?php
+// Inclure le fichier de connexion à la base de données
+include 'connexion.php';
+
+// Requête SQL pour récupérer les détails de participation
+$sql = "SELECT p.ParticipationID, pil.Nom AS NomPilote, k.MarqueModele AS Kart, c.DateHeureCourse AS Course, p.PositionFinale, p.TempsCourse, p.ToursEffectues, p.PointsGagnes, p.Statut 
+FROM participation p 
+JOIN pilotes pil ON p.PiloteID = pil.PiloteID 
+LEFT JOIN karts k ON p.KartID = k.KartID 
+LEFT JOIN courses c ON p.CourseID = c.CourseID 
+LIMIT 0, 25";
+$result = $conn->query($sql);
+
+    // Vérifier si des résultats ont été trouvés
+    if ($result->num_rows > 0) {
+        // Afficher les détails de participation
+        echo "<table>";
+        echo "<tr><th>ID Participation</th><th>Nom Pilote</th><th>Kart</th><th>Course</th><th>Position Finale</th><th>Temps de Course</th><th>Tours Effectués</th><th>Points Gagnés</th><th>Statut</th></tr>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row['ParticipationID'] . "</td>";
+            echo "<td>" . $row['NomPilote'] . "</td>";
+            echo "<td>" . $row['Kart'] . "</td>";
+            echo "<td>" . $row['Course'] . "</td>";
+            echo "<td>" . $row['PositionFinale'] . "</td>";
+            echo "<td>" . $row['TempsCourse'] . "</td>";
+            echo "<td>" . $row['ToursEffectues'] . "</td>";
+            echo "<td>" . $row['PointsGagnes'] . "</td>";
+            echo "<td>" . $row['Statut'] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "Aucune participation trouvée.";
+    }
+
+    // Fermer la connexion à la base de données
+    $conn->close();
+    ?>
+
+    
+
+</main>
+
 
 
     <footer>

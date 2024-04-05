@@ -17,7 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Exécuter la requête SQL
     if ($conn->query($sql) === TRUE) {
-        echo "Kart enregistré avec succès !";
+        // Redirection vers la page de formulaire avec un message de succès
+        header("Location: index1.php?success=1");
     } else {
         echo "Erreur lors de l'enregistrement du kart : " . $conn->error;
     }
@@ -26,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 } else {
     // Redirection vers la page d'index si le formulaire n'a pas été soumis
-    header("Location: index1.html");
+    header("Location: index1.php");
     exit();
 }
 ?>
