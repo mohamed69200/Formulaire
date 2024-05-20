@@ -1,6 +1,6 @@
 <?php
 // Paramètres de connexion à la base de données
-$servername = "localhost"; // Adresse du serveur
+$servername = "172.19.6.10"; // Adresse du serveur
 $username = "root"; // Nom d'utilisateur
 $password = "sn"; // Mot de passe
 $database = "Karting"; // Nom de la base de données

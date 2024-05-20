@@ -36,33 +36,68 @@
     </nav>
 
     <main>
-        <section id="inscription-pilote">
-            <h2>Inscription Pilote</h2>
-            <img src="pilote_image.jpg" alt="Image de pilote" style="width: 200px; height: auto; float: left; margin-right: 20px;">
-            <form action="traitement_inscription_pilote.php" method="post">
-                <label for="nom">Nom:</label>
-                <input type="text" id="nom" name="nom" required><br><br>
-                
-                <label for="prenom">Prénom:</label>
-                <input type="text" id="prenom" name="prenom" required><br><br>
-                
-                <label for="date_naissance">Date de Naissance:</label>
-                <input type="date" id="date_naissance" name="date_naissance" required><br><br>
-                
-                <label for="adresse">Adresse:</label>
-                <input type="text" id="adresse" name="adresse" required><br><br>
-                
-                <label for="telephone">Téléphone:</label>
-                <input type="tel" id="telephone" name="telephone" required><br><br>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required><br><br>
-                
-                <!-- Autres champs d'inscription -->
-                
-                <input type="submit" value="Inscrire le pilote">
-            </form>
-        </section>
+    <section id="inscription-pilote">
+        <h2>Inscription Pilote</h2>
+        <div style="display: flex;">
+            <div style="flex: 1;">
+                <form action="traitement_inscription_pilote.php" method="post">
+                    <label for="nom">Nom:</label>
+                    <input type="text" id="nom" name="nom" required><br><br>
+
+                    <label for="prenom">Prénom:</label>
+                    <input type="text" id="prenom" name="prenom" required><br><br>
+
+                    <label for="date_naissance">Date de Naissance:</label>
+                    <input type="date" id="date_naissance" name="date_naissance" required><br><br>
+
+                    <label for="adresse">Adresse:</label>
+                    <input type="text" id="adresse" name="adresse" required><br><br>
+
+                    <label for="telephone">Téléphone:</label>
+                    <input type="tel" id="telephone" name="telephone" required><br><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required><br><br>
+
+                    <!-- Autres champs d'inscription -->
+
+                    <input type="submit" value="Inscrire le pilote">
+                </form>
+            </div>
+            <div style="flex: 1; padding-left: 20px;">
+                <h3>Nouveaux Pilotes Inscrits</h3>
+                <?php
+                // Inclure le fichier de connexion à la base de données
+                include 'connexion.php';
+
+                // Requête SQL pour récupérer les nouveaux pilotes inscrits
+                $sql = "SELECT Nom, Prenom, DateNaissance, Adresse, Telephone, Email FROM pilotes ORDER BY PiloteID DESC LIMIT 5";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    echo "<table>";
+                    echo "<tr><th>Nom</th><th>Prénom</th><th>Date de Naissance</th><th>Adresse</th><th>Téléphone</th><th>Email</th></tr>";
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["Nom"] . "</td>";
+                        echo "<td>" . $row["Prenom"] . "</td>";
+                        echo "<td>" . $row["DateNaissance"] . "</td>";
+                        echo "<td>" . $row["Adresse"] . "</td>";
+                        echo "<td>" . $row["Telephone"] . "</td>";
+                        echo "<td>" . $row["Email"] . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "Aucun pilote inscrit récemment.";
+                }
+
+                // Fermer la connexion à la base de données
+                $conn->close();
+                ?>
+            </div>
+        </div>
+    </section>
 
         <section id="enregistrement-karts">
             <h2>Enregistrement des Karts</h2>
@@ -228,8 +263,6 @@ $result = $conn->query($sql);
     
 
 </main>
-
-
 
     <footer>
         <p>&copy; 2024 Gestion de Kart. Tous droits réservés.</p>
